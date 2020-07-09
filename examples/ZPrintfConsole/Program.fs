@@ -1,5 +1,8 @@
 ﻿module Program
 
+open Cysharp.Text
+open FSharp.ZPrintf
+
 type Record = {
   Test: string
 }
@@ -7,11 +10,16 @@ type Record = {
 [<EntryPoint>]
 let main argv =
 
-    FSharp.ZPrintf.printfn "Hello %s!" "ZPrintf"
+    printfn "Hello %s!" "ZPrintf"
 
     {
       Test = "example record"
     }
-    |> FSharp.ZPrintf.printfn "%A"
+    |> printfn "%A"
+
+    use sb = ZString.CreateStringBuilder()
+    bprintf sb "%s%i" "foo" 42
+    sb.ToString()
+    |> printfn "%s"
 
     0

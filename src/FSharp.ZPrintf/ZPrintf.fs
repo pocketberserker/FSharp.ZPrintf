@@ -1526,16 +1526,22 @@ module internal PrintfImpl =
             buf.[ptr] <- s
             ptr <- ptr + 1
 
-    // type StringBuilderPrintfEnv<'Result>(k, buf) =
-    //     inherit PrintfEnv<Text.StringBuilder, unit, 'Result>(buf)
-    //     override __.Finish() : 'Result = k ()
-    //     override __.Write(s: string) = ignore(buf.Append s)
-    //     override __.WriteT(()) = ()
+    type Utf16ValueStringBuilderPrintfEnv<'Result>(k, buf: Utf16ValueStringBuilder) =
+        inherit PrintfEnv<Utf16ValueStringBuilder, unit, 'Result>(buf)
+        override __.Finish() : 'Result = k ()
+        override __.Write(s: string) = buf.Append(s)
+        override __.WriteT(()) = ()
+
+    type Utf8ValueStringBuilderPrintfEnv<'Result>(k, buf) =
+        inherit PrintfEnv<Utf8ValueStringBuilder, unit, 'Result>(buf)
+        override __.Finish() : 'Result = k ()
+        override __.Write(s: string) = buf.Append(s)
+        override __.WriteT(()) = ()
 
     type TextWriterPrintfEnv<'Result>(k, tw: IO.TextWriter) =
         inherit PrintfEnv<IO.TextWriter, unit, 'Result>(tw)
         override __.Finish() : 'Result = k()
-        override __.Write(s: string) = tw.Write s
+        override __.Write(s: string) = tw.Write(s)
         override __.WriteT(()) = ()
 
     let inline doPrintf fmt f =
@@ -1550,7 +1556,10 @@ module ZPrintf =
     open System.IO
     open PrintfImpl
 
-    // type Utf16ValueStringBuilderFormat<'T,'Result> = Format<'T, Utf16ValueStringBuilder, unit, 'Result>
+    type Utf16ValueStringBuilderFormat<'T, 'Result> = Format<'T, Utf16ValueStringBuilder, unit, 'Result>
+    type Utf8ValueStringBuilderFormat<'T, 'Result> = Format<'T, Utf8ValueStringBuilder, unit, 'Result>
+    type Utf16ValueStringBuilderFormat<'T> = Utf16ValueStringBuilderFormat<'T, unit>
+    type Utf8ValueStringBuilderFormat<'T> = Utf8ValueStringBuilderFormat<'T, unit>
 
     [<CompiledName("PrintFormatToStringThen")>]
     let ksprintf continuation (format: StringFormat<'T, 'Result>) : 'T =
@@ -1567,11 +1576,11 @@ module ZPrintf =
     [<CompiledName("PrintFormatThen")>]
     let kprintf continuation format = ksprintf continuation format
 
-    // [<CompiledName("PrintFormatToStringBuilderThen")>]
-    // let kbprintf continuation (builder: StringBuilder) format =
-    //     doPrintf format (fun _ ->
-    //         StringBuilderPrintfEnv(continuation, builder) :> PrintfEnv<_, _, _>
-    //     )
+    [<CompiledName("PrintFormatToStringBuilderThen")>]
+    let kbprintf continuation builder format =
+        doPrintf format (fun _ ->
+            Utf16ValueStringBuilderPrintfEnv(continuation, builder) :> PrintfEnv<_, _, _>
+        )
 
     // TODO: compare implementations
     [<CompiledName("PrintFormatToTextWriterThen")>]
@@ -1587,14 +1596,14 @@ module ZPrintf =
     //       )
     //       format
 
-    // [<CompiledName("PrintFormatToStringBuilder")>]
-    // let bprintf builder format  = kbprintf ignore builder format
+    [<CompiledName("PrintFormatToStringBuilder")>]
+    let bprintf builder format = kbprintf ignore builder format
 
     [<CompiledName("PrintFormatToTextWriter")>]
-    let fprintf (textWriter: TextWriter) format  = kfprintf ignore textWriter format
+    let fprintf (textWriter: TextWriter) format = kfprintf ignore textWriter format
 
     [<CompiledName("PrintFormatLineToTextWriter")>]
-    let fprintfn (textWriter: TextWriter) format  = kfprintf (fun _ -> textWriter.WriteLine()) textWriter format
+    let fprintfn (textWriter: TextWriter) format = kfprintf (fun _ -> textWriter.WriteLine()) textWriter format
 
     [<CompiledName("PrintFormatToStringThenFail")>]
     let failwithf format = ksprintf failwith format
@@ -1610,3 +1619,15 @@ module ZPrintf =
 
     [<CompiledName("PrintFormatLineToError")>]
     let eprintfn format = fprintfn Console.Error format
+
+    [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
+    module Utf8 =
+
+        [<CompiledName("PrintFormatToStringBuilderThen")>]
+        let kbprintf continuation (builder: Utf8ValueStringBuilder) format =
+            doPrintf format (fun _ ->
+                Utf8ValueStringBuilderPrintfEnv(continuation, builder) :> PrintfEnv<_, _, _>
+            )
+
+        [<CompiledName("PrintFormatToStringBuilder")>]
+        let bprintf builder format = kbprintf ignore builder format
