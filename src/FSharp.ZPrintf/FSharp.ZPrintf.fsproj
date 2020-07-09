@@ -11,6 +11,7 @@
     <PackageTags>F#;fsharp;string</PackageTags>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ZPrintf.fsi" />
     <Compile Include="ZPrintf.fs" />
   </ItemGroup>
   <ItemGroup>
