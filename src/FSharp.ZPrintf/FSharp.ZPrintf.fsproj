@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Version>0.1.0</Version>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>pocketberserker</Authors>
+    <Owners>pocketberserker</Owners>
+    <PackageProjectUrl>https://github.com/pocketberserker/FSharp.ZPrintf</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Description>F# printf extensions for ZString</Description>
+    <PackageTags>F#;fsharp;string</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="ZPrintf.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ZString" Version="2.1.3" />
+  </ItemGroup>
+</Project>
