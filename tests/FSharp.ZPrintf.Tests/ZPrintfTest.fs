@@ -1,7 +1,7 @@
 module FSharp.ZPrintf.Tests.ZPrintfTest
 
 open Xunit
-open Cysharp.Text
+// open Cysharp.Text
 
 [<Fact>]
 let ``int test`` () =

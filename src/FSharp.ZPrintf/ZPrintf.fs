@@ -1518,7 +1518,7 @@ module internal PrintfImpl =
         let buf: string[] = Array.zeroCreate n
         let mutable ptr = 0
 
-        override __.Finish() : 'Result = k (ZString.Join<string>("", buf))
+        override __.Finish() : 'Result = k (String.Concat(buf))
         override __.Write(s: string) =
             buf.[ptr] <- s
             ptr <- ptr + 1
