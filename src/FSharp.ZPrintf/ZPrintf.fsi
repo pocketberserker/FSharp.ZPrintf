@@ -2,18 +2,18 @@ namespace FSharp
 
 open System.IO
 open Printf
-open Cysharp.Text
+// open Cysharp.Text
 
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module ZPrintf =
 
-    type Utf16ValueStringBuilderFormat<'T, 'Result> = Format<'T, Utf16ValueStringBuilder, unit, 'Result>
-    type Utf8ValueStringBuilderFormat<'T, 'Result> = Format<'T, Utf8ValueStringBuilder, unit, 'Result>
-    type Utf16ValueStringBuilderFormat<'T> = Utf16ValueStringBuilderFormat<'T, unit>
-    type Utf8ValueStringBuilderFormat<'T> = Utf8ValueStringBuilderFormat<'T, unit>
+    // type Utf16ValueStringBuilderFormat<'T, 'Result> = Format<'T, Utf16ValueStringBuilder, unit, 'Result>
+    // type Utf8ValueStringBuilderFormat<'T, 'Result> = Format<'T, Utf8ValueStringBuilder, unit, 'Result>
+    // type Utf16ValueStringBuilderFormat<'T> = Utf16ValueStringBuilderFormat<'T, unit>
+    // type Utf8ValueStringBuilderFormat<'T> = Utf8ValueStringBuilderFormat<'T, unit>
 
-    [<CompiledName("PrintFormatToStringBuilder")>]
-    val bprintf : builder:Utf16ValueStringBuilder -> format:Utf16ValueStringBuilderFormat<'T> -> 'T
+    // [<CompiledName("PrintFormatToStringBuilder")>]
+    // val bprintf : builder:Utf16ValueStringBuilder -> format:Utf16ValueStringBuilderFormat<'T> -> 'T
 
     [<CompiledName("PrintFormatToTextWriter")>]
     val fprintf : textWriter:TextWriter -> format:TextWriterFormat<'T> -> 'T
@@ -36,8 +36,8 @@ module ZPrintf =
     [<CompiledName("PrintFormatToStringThen")>]
     val sprintf : format:StringFormat<'T> -> 'T
 
-    [<CompiledName("PrintFormatToStringBuilderThen")>]
-    val kbprintf : continuation:(unit -> 'Result) -> builder:Utf16ValueStringBuilder -> format:Utf16ValueStringBuilderFormat<'T,'Result> -> 'T
+    // [<CompiledName("PrintFormatToStringBuilderThen")>]
+    // val kbprintf : continuation:(unit -> 'Result) -> builder:Utf16ValueStringBuilder -> format:Utf16ValueStringBuilderFormat<'T,'Result> -> 'T
 
     [<CompiledName("PrintFormatToTextWriterThen")>]
     val kfprintf : continuation:(unit -> 'Result) -> textWriter:TextWriter -> format:TextWriterFormat<'T,'Result> -> 'T
@@ -51,11 +51,11 @@ module ZPrintf =
     [<CompiledName("PrintFormatToStringThenFail")>]
     val failwithf: format:StringFormat<'T,'Result> -> 'T
 
-    [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
-    module Utf8 =
+    // [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
+    // module Utf8 =
 
-        [<CompiledName("PrintFormatToStringBuilder")>]
-        val bprintf : builder:Utf8ValueStringBuilder -> format:Utf8ValueStringBuilderFormat<'T> -> 'T
+    //     [<CompiledName("PrintFormatToStringBuilder")>]
+    //     val bprintf : builder:Utf8ValueStringBuilder -> format:Utf8ValueStringBuilderFormat<'T> -> 'T
 
-        [<CompiledName("PrintFormatToStringBuilderThen")>]
-        val kbprintf : continuation:(unit -> 'Result) -> builder:Utf8ValueStringBuilder -> format:Utf8ValueStringBuilderFormat<'T,'Result> -> 'T
+    //     [<CompiledName("PrintFormatToStringBuilderThen")>]
+    //     val kbprintf : continuation:(unit -> 'Result) -> builder:Utf8ValueStringBuilder -> format:Utf8ValueStringBuilderFormat<'T,'Result> -> 'T

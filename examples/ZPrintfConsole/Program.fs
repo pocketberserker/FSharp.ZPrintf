@@ -17,9 +17,9 @@ let main argv =
     }
     |> printfn "%A"
 
-    use sb = ZString.CreateStringBuilder()
-    bprintf sb "%s%i" "foo" 42
-    sb.ToString()
-    |> printfn "%s"
+    // use sb = ZString.CreateStringBuilder()
+    // bprintf sb "%s%i" "foo" 42
+    // sb.ToString()
+    // |> printfn "%s"
 
     0

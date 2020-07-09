@@ -38,36 +38,36 @@ let ``format and precision specifiers``() =
     test "%10c"  'a'   "         a"
     test "%-10c" 'a'   "a         "
 
-module Utf16ValueStringBuilder =
+// module Utf16ValueStringBuilder =
 
-    open FSharp.ZPrintf
+//     open FSharp.ZPrintf
 
-    [<Fact>]
-    let ``should equal original`` () =
-        let expected =
-            use sb = ZString.CreateStringBuilder()
-            sb.Append("foo")
-            sb.Append(42)
-            sb.ToString()
-        let actual =
-            use sb = ZString.CreateStringBuilder()
-            bprintf sb "%s%i" "foo" 42
-            sb.ToString()
-        Assert.Equal(expected, actual)
+//     [<Fact>]
+//     let ``should equal original`` () =
+//         let expected =
+//             use sb = ZString.CreateStringBuilder()
+//             sb.Append("foo")
+//             sb.Append(42)
+//             sb.ToString()
+//         let actual =
+//             use sb = ZString.CreateStringBuilder()
+//             bprintf sb "%s%i" "foo" 42
+//             sb.ToString()
+//         Assert.Equal(expected, actual)
 
-module Utf8ValueStringBuilder =
+// module Utf8ValueStringBuilder =
 
-    open FSharp.ZPrintf.Utf8
+//     open FSharp.ZPrintf.Utf8
 
-    [<Fact>]
-    let ``should equal original`` () =
-        let expected =
-            use sb = ZString.CreateUtf8StringBuilder()
-            sb.Append("foo")
-            sb.Append(42)
-            sb.ToString()
-        let actual =
-            use sb = ZString.CreateUtf8StringBuilder()
-            bprintf sb "%s%i" "foo" 42
-            sb.ToString()
-        Assert.Equal(expected, actual)
+//     [<Fact>]
+//     let ``should equal original`` () =
+//         let expected =
+//             use sb = ZString.CreateUtf8StringBuilder()
+//             sb.Append("foo")
+//             sb.Append(42)
+//             sb.ToString()
+//         let actual =
+//             use sb = ZString.CreateUtf8StringBuilder()
+//             bprintf sb "%s%i" "foo" 42
+//             sb.ToString()
+//         Assert.Equal(expected, actual)
