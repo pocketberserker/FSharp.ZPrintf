@@ -1515,16 +1515,17 @@ module internal PrintfImpl =
     type StringPrintfEnv<'Result>(k, n) =
         inherit PrintfEnv<unit, string, 'Result>(())
 
-        let buf: string[] = Array.zeroCreate n
-        let mutable ptr = 0
+        let buf = new Utf16ValueStringBuilder(true)
 
-        override __.Finish() : 'Result = k (String.Concat(buf))
+        override __.Finish() : 'Result =
+            try
+                k (buf.ToString())
+            finally
+                buf.Dispose()
         override __.Write(s: string) =
-            buf.[ptr] <- s
-            ptr <- ptr + 1
+            buf.Append(s)
         override __.WriteT s =
-            buf.[ptr] <- s
-            ptr <- ptr + 1
+            buf.Append(s)
 
     // type Utf16ValueStringBuilderPrintfEnv<'Result>(k, buf: Utf16ValueStringBuilder) =
     //     inherit PrintfEnv<Utf16ValueStringBuilder, unit, 'Result>(buf)
